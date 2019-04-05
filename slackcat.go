@@ -91,9 +91,6 @@ func (sc *Slackcat) processStreamQ() {
 
 func (sc *Slackcat) postMsg(msglines []string) {
 	msg := strings.Join(msglines, "\n")
-	msg = strings.Replace(msg, "&", "%26amp%3B", -1)
-	msg = strings.Replace(msg, "<", "%26lt%3B", -1)
-	msg = strings.Replace(msg, ">", "%26gt%3B", -1)
 
 	msgOpts := &slack.ChatPostMessageOpt{AsUser: true}
 	if sc.username != "" {

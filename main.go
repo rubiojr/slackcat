@@ -124,6 +124,10 @@ func main() {
 			Usage: "Stream messages to Slack continuously instead of uploading a single snippet",
 		},
 		cli.BoolFlag{
+			Name:  "message, m",
+			Usage: "Send a message",
+		},
+		cli.BoolFlag{
 			Name:  "tee, t",
 			Usage: "Print stdin to screen before posting",
 		},
@@ -214,6 +218,12 @@ func main() {
 
 		if c.Bool("stream") {
 			slackcat.stream(scanner.StreamLines())
+		} else if c.Bool("message") {
+			lines := []string{}
+			for l := range scanner.StreamLines() {
+				lines = append(lines, l)
+			}
+			slackcat.postMsg(lines)
 		} else {
 			filePath := writeTemp(scanner.StreamBytes())
 			defer os.Remove(filePath)
